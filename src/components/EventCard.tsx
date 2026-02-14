@@ -12,6 +12,8 @@ interface EventCardProps {
   capacity: number;
   registered: number;
   status: EventStatus;
+  daysUntil: number;
+  onClick?: () => void;
 }
 
 const statusConfig: Record<EventStatus, { label: string; className: string; pulse: boolean }> = {
@@ -20,9 +22,17 @@ const statusConfig: Record<EventStatus, { label: string; className: string; puls
   ended: { label: 'Ended', className: 'bg-slate-500/20 text-slate-400', pulse: false },
 };
 
-export function EventCard({ title, date, venue, capacity, registered, status }: EventCardProps) {
+function shadeCoverage(daysUntil: number): number {
+  if (daysUntil <= 0) return 12;
+  if (daysUntil <= 2) return 90;
+  if (daysUntil <= 7) return 55;
+  return 18;
+}
+
+export function EventCard({ title, date, venue, capacity, registered, status, daysUntil, onClick }: EventCardProps) {
   const percent = capacity > 0 ? Math.min(100, (registered / capacity) * 100) : 0;
   const config = statusConfig[status];
+  const coverage = shadeCoverage(daysUntil);
 
   return (
     <motion.div
@@ -30,13 +40,22 @@ export function EventCard({ title, date, venue, capacity, registered, status }: 
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
+      className={onClick ? 'cursor-pointer' : undefined}
     >
       <GlassCard
         className={clsx(
-          'p-grid-4 h-full overflow-hidden transition-all duration-300 hover:border-neon-cyan/40 dark:hover:border-neon-purple/40 hover:shadow-glow-cyan dark:hover:shadow-glow-purple'
+          'relative p-grid-4 h-full overflow-hidden transition-all duration-300 hover:border-neon-cyan/40 dark:hover:border-neon-purple/40 hover:shadow-glow-cyan dark:hover:shadow-glow-purple'
         )}
       >
-        <div className="flex items-start justify-between gap-grid-2">
+        <div
+          className="absolute inset-y-0 left-0 pointer-events-none rounded-l-3xl bg-neon-cyan/15 dark:bg-neon-purple/15"
+          style={{ width: `${coverage}%` }}
+        />
+        <div className="relative flex items-start justify-between gap-grid-2">
           <h3 className="font-semibold text-slate-800 dark:text-slate-100 flex-1 min-w-0">{title}</h3>
           <span
             className={clsx(
@@ -48,7 +67,7 @@ export function EventCard({ title, date, venue, capacity, registered, status }: 
             {config.label}
           </span>
         </div>
-        <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
+        <div className="relative mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 shrink-0" />
             <span>{date}</span>
@@ -58,7 +77,7 @@ export function EventCard({ title, date, venue, capacity, registered, status }: 
             <span className="truncate">{venue}</span>
           </div>
         </div>
-        <div className="mt-4">
+        <div className="relative mt-4">
           <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
             <span>Capacity</span>
             <span>

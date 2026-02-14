@@ -1,4 +1,6 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 import { EventCard } from '../components/EventCard';
 import { events } from '../data/mockData';
 
@@ -15,7 +17,11 @@ const item = {
   show: { opacity: 1, y: 0 },
 };
 
+type EventItem = (typeof events)[number];
+
 export function Events() {
+  const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -43,10 +49,54 @@ export function Events() {
               capacity={ev.capacity}
               registered={ev.registered}
               status={ev.status}
+              daysUntil={ev.daysUntil}
+              onClick={() => setSelectedEvent(ev)}
             />
           </motion.div>
         ))}
       </motion.div>
+
+      <AnimatePresence>
+        {selectedEvent && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/40"
+              onClick={() => setSelectedEvent(null)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              onClick={(e) => e.stopPropagation()}
+              className="fixed left-1/2 top-1/2 z-50 w-full max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft dark:shadow-soft-dark p-6"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">{selectedEvent.title}</h3>
+                <button
+                  type="button"
+                  aria-label="Close"
+                  onClick={() => setSelectedEvent(null)}
+                  className="p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+                {selectedEvent.date} · {selectedEvent.venue}
+              </p>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                {selectedEvent.registered} / {selectedEvent.capacity} registered · {selectedEvent.status}
+              </p>
+              <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
+                {selectedEvent.description}
+              </p>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

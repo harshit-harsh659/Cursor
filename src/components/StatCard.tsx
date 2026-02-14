@@ -4,6 +4,8 @@ import type { LucideIcon } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import clsx from 'clsx';
 
+type CardTint = 'sky' | 'violet' | 'teal' | 'indigo';
+
 interface StatCardProps {
   title: string;
   value: number;
@@ -11,13 +13,23 @@ interface StatCardProps {
   icon: LucideIcon;
   accent?: 'cyan' | 'purple';
   delay?: number;
+  onClick?: () => void;
+  /** Light formal tint for clickable stat cards */
+  tint?: CardTint;
 }
 
 function easeOutQuart(t: number): number {
   return 1 - Math.pow(1 - t, 4);
 }
 
-export function StatCard({ title, value, suffix = '', icon: Icon, accent = 'cyan', delay = 0 }: StatCardProps) {
+const tintClasses: Record<CardTint, string> = {
+  sky: 'bg-sky-50/70 dark:bg-sky-950/25 border-sky-100/50 dark:border-sky-800/30',
+  violet: 'bg-violet-50/70 dark:bg-violet-950/25 border-violet-100/50 dark:border-violet-800/30',
+  teal: 'bg-teal-50/70 dark:bg-teal-950/25 border-teal-100/50 dark:border-teal-800/30',
+  indigo: 'bg-indigo-50/70 dark:bg-indigo-950/25 border-indigo-100/50 dark:border-indigo-800/30',
+};
+
+export function StatCard({ title, value, suffix = '', icon: Icon, accent = 'cyan', delay = 0, onClick, tint }: StatCardProps) {
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
@@ -40,8 +52,13 @@ export function StatCard({ title, value, suffix = '', icon: Icon, accent = 'cyan
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
+      className={onClick ? 'cursor-pointer' : undefined}
     >
-      <GlassCard className="p-grid-4">
+      <GlassCard className={clsx('p-grid-4', tint && tintClasses[tint])}>
         <div className="flex items-start justify-between">
           <div>
             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{title}</p>

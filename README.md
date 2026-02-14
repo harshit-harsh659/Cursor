@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # College Society Management System
 
 Production-ready frontend for a premium SaaS College Society Management product.
@@ -46,3 +47,6 @@ src/
   layouts/      # MainLayout
   pages/        # Dashboard, Societies, Events, AI
 ```
+=======
+# Cursor
+>>>>>>> 904dc60c80625d1bc6aa26683361081c46883514

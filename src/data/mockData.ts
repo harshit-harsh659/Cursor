@@ -5,6 +5,16 @@ export const dashboardStats = [
   { title: 'Upcoming', value: 8, icon: 'calendar', accent: 'purple' as const },
 ];
 
+export const membersByYear = [
+  { year: '1st Year', members: 620 },
+  { year: '2nd Year', members: 480 },
+  { year: '3rd Year', members: 420 },
+  { year: '4th Year', members: 327 },
+];
+
+/** February 2025 dates that have events (for calendar highlight) */
+export const eventDatesInFebruary = [14, 15, 16, 18, 20, 22];
+
 export const lineChartData = [
   { name: 'Mon', events: 4, registrations: 120 },
   { name: 'Tue', events: 3, registrations: 98 },
@@ -46,10 +56,10 @@ export const societies = [
 ];
 
 export const events = [
-  { id: '1', title: 'Hackathon 2025', date: 'Feb 16, 10:00 AM', venue: 'Main Hall', capacity: 200, registered: 156, status: 'upcoming' as const },
-  { id: '2', title: 'Dance Workshop', date: 'Feb 15, 4:00 PM', venue: 'Auditorium', capacity: 80, registered: 80, status: 'live' as const },
-  { id: '3', title: 'Tech Talk: AI', date: 'Feb 14, 2:00 PM', venue: 'Room 101', capacity: 60, registered: 60, status: 'ended' as const },
-  { id: '4', title: 'Cricket Finals', date: 'Feb 18, 9:00 AM', venue: 'Sports Ground', capacity: 500, registered: 320, status: 'upcoming' as const },
-  { id: '5', title: 'Debate Competition', date: 'Feb 20, 3:00 PM', venue: 'Conference Hall', capacity: 100, registered: 45, status: 'upcoming' as const },
-  { id: '6', title: 'Photo Exhibition', date: 'Feb 22, 11:00 AM', venue: 'Gallery', capacity: 150, registered: 90, status: 'upcoming' as const },
+  { id: '1', title: 'Hackathon 2025', date: 'Feb 16, 10:00 AM', venue: 'Main Hall', capacity: 200, registered: 156, status: 'upcoming' as const, description: 'Build something cool in 24 hours and win prizes. Show your coding skills and get noticed by recruiters.', daysUntil: 2 },
+  { id: '2', title: 'Dance Workshop', date: 'Feb 15, 4:00 PM', venue: 'Auditorium', capacity: 80, registered: 80, status: 'live' as const, description: 'Learn new moves and express yourself on the floor. Perfect for beginners and enthusiasts.', daysUntil: 1 },
+  { id: '3', title: 'Tech Talk: AI', date: 'Feb 14, 2:00 PM', venue: 'Room 101', capacity: 60, registered: 60, status: 'ended' as const, description: 'Explore the future of AI and machine learning with industry experts.', daysUntil: 0 },
+  { id: '4', title: 'Cricket Finals', date: 'Feb 18, 9:00 AM', venue: 'Sports Ground', capacity: 500, registered: 320, status: 'upcoming' as const, description: 'Show your talent on the field and get recognized. Compete for the championship trophy.', daysUntil: 4 },
+  { id: '5', title: 'Debate Competition', date: 'Feb 20, 3:00 PM', venue: 'Conference Hall', capacity: 100, registered: 45, status: 'upcoming' as const, description: 'Argue your case and sharpen your public speaking skills. Stand out and win.', daysUntil: 6 },
+  { id: '6', title: 'Photo Exhibition', date: 'Feb 22, 11:00 AM', venue: 'Gallery', capacity: 150, registered: 90, status: 'upcoming' as const, description: 'Display your best shots and get feedback from pros. Get your work seen.', daysUntil: 8 },
 ];
